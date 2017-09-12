@@ -1,10 +1,18 @@
 class PostsController < ApplicationController
-  before_action :set_post, only: [:show, :edit, :update, :destroy]
+  before_action :set_post, only: [:show, :edit, :update, :destroy, :search]
 
   # GET /posts
   # GET /posts.json
   def index
     @posts = Post.all
+    @search = Post.new
+    
+    def save_tweets_into_database
+      #@tweets = Twitter.search("#em2012" "#Italy" "#Spain", :lang => "en", :rpp => 25)
+      @tweets.each do |tweet|
+        Tweet.create(body: tweet)
+      end
+    end
   end
 
   # GET /posts/1
@@ -69,6 +77,6 @@ class PostsController < ApplicationController
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def post_params
-      params.require(:post).permit(:title, :body)
+      params.require(:post).permit(:title, :body, :uname)
     end
 end
