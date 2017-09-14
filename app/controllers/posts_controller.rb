@@ -5,13 +5,10 @@ class PostsController < ApplicationController
   # GET /posts.json
   def index
     @posts = Post.all
-    @search = Post.new
     
-    def save_tweets_into_database
-      #@tweets = Twitter.search("#em2012" "#Italy" "#Spain", :lang => "en", :rpp => 25)
-      @tweets.each do |tweet|
-        Tweet.create(body: tweet)
-      end
+    @tweet = Tweet.new
+    @client.user_timeline(params["search"]).take(10).each do |tweet|
+      Tweet.create(name: tweet.user.screen_name, body: tweet.text)
     end
   end
 
@@ -32,6 +29,11 @@ class PostsController < ApplicationController
   # POST /posts
   # POST /posts.json
   def create
+    @tweet = Tweet.new(params[:search])
+    if @tweet.save
+      redirect_to post_path
+    end
+    
     @post = Post.new(post_params)
 
     respond_to do |format|
