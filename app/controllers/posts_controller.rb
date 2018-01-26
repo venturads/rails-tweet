@@ -7,8 +7,12 @@ class PostsController < ApplicationController
     @posts = Post.all
     
     @tweet = Tweet.new
-    @client.user_timeline(params["search"]).take(10).each do |tweet|
-      Tweet.create(name: tweet.user.screen_name, body: tweet.text)
+    @client.user_timeline(params["search"]).take(2).each do |tweet|
+      Tweet.create(name: tweet.user.screen_name, body: tweet.text, twitterid: tweet.id)
+    end
+    @users = User.new
+    @client.user_timeline(params["search"]).take(2).each do |user|
+      User.create(name: user.user.screen_name, twitterid: user.id)
     end
   end
 
