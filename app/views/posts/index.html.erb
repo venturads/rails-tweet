@@ -5,7 +5,7 @@
 <%= render 'tweets/search' %>
 
 <br>
-      <% @client.user_timeline(params["search"]).take(10).each do |tweet| %>
+      <% @client.user_timeline(params["search"]).take(20).each do |tweet| %>
       <tr>
         <td></td>
         <td><!-- <%= tweet.id %> -->
